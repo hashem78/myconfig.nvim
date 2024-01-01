@@ -1,96 +1,5 @@
 require('hashem')
 
--- [[ Highlight on yank ]]
--- See `:help vim.highlight.on_yank()`
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
-vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-  group = highlight_group,
-  pattern = '*',
-})
-
--- [[ Configure Telescope ]]
--- See `:help telescope` and `:help telescope.setup()`
-require('telescope').setup {
-  defaults = {
-    mappings = {
-      i = {
-        ['<C-u>'] = false,
-        ['<C-d>'] = false,
-      },
-    },
-  },
-}
-
--- Enable telescope fzf native, if installed
-pcall(require('telescope').load_extension, 'fzf')
-
--- Telescope live_grep in git root
--- Function to find the git root directory based on the current buffer's path
-local function find_git_root()
-  -- Use the current buffer's path as the starting point for the git search
-  local current_file = vim.api.nvim_buf_get_name(0)
-  local current_dir
-  local cwd = vim.fn.getcwd()
-  -- If the buffer is not associated with a file, return nil
-  if current_file == '' then
-    current_dir = cwd
-  else
-    -- Extract the directory from the current file's path
-    current_dir = vim.fn.fnamemodify(current_file, ':h')
-  end
-
-  -- Find the Git root directory from the current file's path
-  local git_root = vim.fn.systemlist('git -C ' .. vim.fn.escape(current_dir, ' ') .. ' rev-parse --show-toplevel')[1]
-  if vim.v.shell_error ~= 0 then
-    print 'Not a git repository. Searching on current working directory'
-    return cwd
-  end
-  return git_root
-end
-
--- Custom live_grep function to search in git root
-local function live_grep_git_root()
-  local git_root = find_git_root()
-  if git_root then
-    require('telescope.builtin').live_grep {
-      search_dirs = { git_root },
-    }
-  end
-end
-
-vim.api.nvim_create_user_command('LiveGrepGitRoot', live_grep_git_root, {})
-
--- See `:help telescope.builtin`
-vim.keymap.set('n', '<leader>?', require('telescope.builtin').oldfiles, { desc = '[?] Find recently opened files' })
-vim.keymap.set('n', '<leader><space>', require('telescope.builtin').buffers, { desc = '[ ] Find existing buffers' })
-vim.keymap.set('n', '<leader>/', function()
-  -- You can pass additional configuration to telescope to change theme, layout, etc.
-  require('telescope.builtin').current_buffer_fuzzy_find(require('telescope.themes').get_dropdown {
-    winblend = 10,
-    previewer = false,
-  })
-end, { desc = '[/] Fuzzily search in current buffer' })
-
-local function telescope_live_grep_open_files()
-  require('telescope.builtin').live_grep {
-    grep_open_files = true,
-    prompt_title = 'Live Grep in Open Files',
-  }
-end
-vim.keymap.set('n', '<leader>s/', telescope_live_grep_open_files, { desc = '[S]earch [/] in Open Files' })
-vim.keymap.set('n', '<leader>ss', require('telescope.builtin').builtin, { desc = '[S]earch [S]elect Telescope' })
-vim.keymap.set('n', '<leader>gf', require('telescope.builtin').git_files, { desc = 'Search [G]it [F]iles' })
-vim.keymap.set('n', '<leader>sf', require('telescope.builtin').find_files, { desc = '[S]earch [F]iles' })
-vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc = '[S]earch [H]elp' })
-vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
-vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
-vim.keymap.set('n', '<leader>sG', ':LiveGrepGitRoot<cr>', { desc = '[S]earch by [G]rep on Git Root' })
-vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
-vim.keymap.set('n', '<leader>sr', require('telescope.builtin').resume, { desc = '[S]earch [R]esume' })
-
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 -- Defer Treesitter setup after first render to improve startup time of 'nvim {filename}'
@@ -203,7 +112,7 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
-  
+
   require('lsp-inlayhints').on_attach(client, bufnr)
 end
 
@@ -334,24 +243,24 @@ cmp.setup {
 }
 
 require("cmake-tools").setup {
-  cmake_command = "cmake", -- this is used to specify cmake command path
-  ctest_command = "ctest", -- this is used to specify ctest command path
-  cmake_regenerate_on_save = true, -- auto generate when save CMakeLists.txt
+  cmake_command = "cmake",                                          -- this is used to specify cmake command path
+  ctest_command = "ctest",                                          -- this is used to specify ctest command path
+  cmake_regenerate_on_save = true,                                  -- auto generate when save CMakeLists.txt
   cmake_generate_options = { "-DCMAKE_EXPORT_COMPILE_COMMANDS=1" }, -- this will be passed when invoke `CMakeGenerate`
-  cmake_build_options = {}, -- this will be passed when invoke `CMakeBuild`
+  cmake_build_options = {},                                         -- this will be passed when invoke `CMakeBuild`
   -- support macro expansion:
   --       ${kit}
   --       ${kitGenerator}
   --       ${variant:xx}
   cmake_build_directory = "out/${variant:buildType}", -- this is used to specify generate directory for cmake, allows macro expansion, relative to vim.loop.cwd()
-  cmake_soft_link_compile_commands = true, -- this will automatically make a soft link from compile commands file to project root dir
-  cmake_compile_commands_from_lsp = false, -- this will automatically set compile commands file location using lsp, to use it, please set `cmake_soft_link_compile_commands` to false
-  cmake_kits_path = nil, -- this is used to specify global cmake kits path, see CMakeKits for detailed usage
+  cmake_soft_link_compile_commands = true,            -- this will automatically make a soft link from compile commands file to project root dir
+  cmake_compile_commands_from_lsp = false,            -- this will automatically set compile commands file location using lsp, to use it, please set `cmake_soft_link_compile_commands` to false
+  cmake_kits_path = nil,                              -- this is used to specify global cmake kits path, see CMakeKits for detailed usage
   cmake_variants_message = {
-    short = { show = true }, -- whether to show short message
-    long = { show = true, max_length = 40 }, -- whether to show long message
+    short = { show = true },                          -- whether to show short message
+    long = { show = true, max_length = 40 },          -- whether to show long message
   },
-  cmake_dap_configuration = { -- debug settings for cmake
+  cmake_dap_configuration = {                         -- debug settings for cmake
     name = "cpp",
     type = "codelldb",
     request = "launch",
@@ -359,31 +268,31 @@ require("cmake-tools").setup {
     runInTerminal = true,
     console = "integratedTerminal",
   },
-  cmake_executor = { -- executor to use
-    name = "quickfix", -- name of the executor
-    opts = {}, -- the options the executor will get, possible values depend on the executor type. See `default_opts` for possible values.
-    default_opts = { -- a list of default and possible values for executors
+  cmake_executor = {                    -- executor to use
+    name = "quickfix",                  -- name of the executor
+    opts = {},                          -- the options the executor will get, possible values depend on the executor type. See `default_opts` for possible values.
+    default_opts = {                    -- a list of default and possible values for executors
       quickfix = {
-        show = "always", -- "always", "only_on_error"
-        position = "belowright", -- "vertical", "horizontal", "leftabove", "aboveleft", "rightbelow", "belowright", "topleft", "botright", use `:h vertical` for example to see help on them
+        show = "always",                -- "always", "only_on_error"
+        position = "belowright",        -- "vertical", "horizontal", "leftabove", "aboveleft", "rightbelow", "belowright", "topleft", "botright", use `:h vertical` for example to see help on them
         size = 10,
-        encoding = "utf-8", -- if encoding is not "utf-8", it will be converted to "utf-8" using `vim.fn.iconv`
+        encoding = "utf-8",             -- if encoding is not "utf-8", it will be converted to "utf-8" using `vim.fn.iconv`
         auto_close_when_success = true, -- typically, you can use it with the "always" option; it will auto-close the quickfix buffer if the execution is successful.
       },
       overseer = {
         new_task_opts = {
-            strategy = {
-                "toggleterm",
-                direction = "horizontal",
-                autos_croll = true,
-                quit_on_exit = "success"
-            }
+          strategy = {
+            "toggleterm",
+            direction = "horizontal",
+            autos_croll = true,
+            quit_on_exit = "success"
+          }
         }, -- options to pass into the `overseer.new_task` command
         on_new_task = function(task)
-            require("overseer").open(
-                { enter = false, direction = "right" }
-            )
-        end,   -- a function that gets overseer.Task when it is created, before calling `task:start`
+          require("overseer").open(
+            { enter = false, direction = "right" }
+          )
+        end, -- a function that gets overseer.Task when it is created, before calling `task:start`
       },
       terminal = {
         name = "Main Terminal",
@@ -392,23 +301,23 @@ require("cmake-tools").setup {
         split_size = 11,
 
         -- Window handling
-        single_terminal_per_instance = true, -- Single viewport, multiple windows
-        single_terminal_per_tab = true, -- Single viewport per tab
+        single_terminal_per_instance = true,  -- Single viewport, multiple windows
+        single_terminal_per_tab = true,       -- Single viewport per tab
         keep_terminal_static_location = true, -- Static location of the viewport if avialable
 
         -- Running Tasks
-        start_insert = false, -- If you want to enter terminal with :startinsert upon using :CMakeRun
-        focus = false, -- Focus on terminal when cmake task is launched.
+        start_insert = false,       -- If you want to enter terminal with :startinsert upon using :CMakeRun
+        focus = false,              -- Focus on terminal when cmake task is launched.
         do_not_add_newline = false, -- Do not hit enter on the command inserted when using :CMakeRun, allowing a chance to review or modify the command before hitting enter.
-      }, -- terminal executor uses the values in cmake_terminal
+      },                            -- terminal executor uses the values in cmake_terminal
     },
   },
-  cmake_runner = { -- runner to use
-    name = "terminal", -- name of the runner
-    opts = {}, -- the options the runner will get, possible values depend on the runner type. See `default_opts` for possible values.
-    default_opts = { -- a list of default and possible values for runners
+  cmake_runner = {               -- runner to use
+    name = "terminal",           -- name of the runner
+    opts = {},                   -- the options the runner will get, possible values depend on the runner type. See `default_opts` for possible values.
+    default_opts = {             -- a list of default and possible values for runners
       quickfix = {
-        show = "always", -- "always", "only_on_error"
+        show = "always",         -- "always", "only_on_error"
         position = "belowright", -- "bottom", "top"
         size = 10,
         encoding = "utf-8",
@@ -416,15 +325,15 @@ require("cmake-tools").setup {
       },
       overseer = {
         new_task_opts = {
-            strategy = {
-                "toggleterm",
-                direction = "horizontal",
-                autos_croll = true,
-                quit_on_exit = "success"
-            }
-        }, -- options to pass into the `overseer.new_task` command
+          strategy = {
+            "toggleterm",
+            direction = "horizontal",
+            autos_croll = true,
+            quit_on_exit = "success"
+          }
+        },   -- options to pass into the `overseer.new_task` command
         on_new_task = function(task)
-        end,   -- a function that gets overseer.Task when it is created, before calling `task:start`
+        end, -- a function that gets overseer.Task when it is created, before calling `task:start`
       },
       terminal = {
         name = "Main Terminal",
@@ -433,13 +342,13 @@ require("cmake-tools").setup {
         split_size = 11,
 
         -- Window handling
-        single_terminal_per_instance = true, -- Single viewport, multiple windows
-        single_terminal_per_tab = true, -- Single viewport per tab
+        single_terminal_per_instance = true,  -- Single viewport, multiple windows
+        single_terminal_per_tab = true,       -- Single viewport per tab
         keep_terminal_static_location = true, -- Static location of the viewport if avialable
 
         -- Running Tasks
-        start_insert = false, -- If you want to enter terminal with :startinsert upon using :CMakeRun
-        focus = false, -- Focus on terminal when cmake task is launched.
+        start_insert = false,       -- If you want to enter terminal with :startinsert upon using :CMakeRun
+        focus = false,              -- Focus on terminal when cmake task is launched.
         do_not_add_newline = false, -- Do not hit enter on the command inserted when using :CMakeRun, allowing a chance to review or modify the command before hitting enter.
       },
     },
@@ -453,4 +362,3 @@ require("cmake-tools").setup {
 }
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
-
