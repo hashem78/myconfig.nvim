@@ -53,7 +53,7 @@ require("cmake-tools").setup {
       terminal = {
         name = "Main Terminal",
         prefix_name = "[CMakeTools]: ", -- This must be included and must be unique, otherwise the terminals will not work. Do not use a simple spacebar " ", or any generic name
-        split_direction = "horizontal", -- "horizontal", "vertical"
+        split_direction = "vertical", -- "horizontal", "vertical"
         split_size = 11,
 
         -- Window handling
