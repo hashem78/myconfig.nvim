@@ -240,5 +240,9 @@ require('lazy').setup({
 		config = function()
 			require("nvim-surround").setup({})
 		end
+	},
+	{
+			'numToStr/Comment.nvim',
+			lazy = false,
 	}
 }, {})
