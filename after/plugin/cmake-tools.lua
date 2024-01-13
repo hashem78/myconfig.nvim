@@ -39,7 +39,7 @@ require("cmake-tools").setup {
         new_task_opts = {
           strategy = {
             "toggleterm",
-            direction = "vertical",
+            direction = "horizontal",
             autos_croll = true,
             quit_on_exit = "success"
           }
@@ -53,7 +53,7 @@ require("cmake-tools").setup {
       terminal = {
         name = "Main Terminal",
         prefix_name = "[CMakeTools]: ", -- This must be included and must be unique, otherwise the terminals will not work. Do not use a simple spacebar " ", or any generic name
-        split_direction = "vertical", -- "horizontal", "vertical"
+        split_direction = "horizontal", -- "horizontal", "vertical"
         split_size = 11,
 
         -- Window handling
@@ -83,7 +83,7 @@ require("cmake-tools").setup {
         new_task_opts = {
           strategy = {
             "toggleterm",
-            direction = "vertical",
+            direction = "horizontal",
             autos_croll = true,
             quit_on_exit = "success"
           }
@@ -94,8 +94,8 @@ require("cmake-tools").setup {
       terminal = {
         name = "Main Terminal",
         prefix_name = "[CMakeTools]: ", -- This must be included and must be unique, otherwise the terminals will not work. Do not use a simple spacebar " ", or any generic name
-        split_direction = "vertical", -- "horizontal", "vertical"
-        split_size = 75,
+        split_direction = "horizontal", -- "horizontal", "vertical"
+        split_size = 11,
 
         -- Window handling
         single_terminal_per_instance = true,  -- Single viewport, multiple windows
