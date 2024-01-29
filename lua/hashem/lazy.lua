@@ -315,5 +315,25 @@ require('lazy').setup({
 			},
 			use_diagnostic_signs = false -- enabling this will use the signs defined in your lsp client
 		},
+	},
+	{
+		"nvimtools/none-ls.nvim",
+		config = function()
+			local none_ls = require("null-ls");
+			none_ls.setup(
+				{
+					sources = {
+						none_ls.builtins.formatting.black,
+						none_ls.builtins.diagnostics.mypy,
+						none_ls.builtins.diagnostics.ruff,
+						none_ls.builtins.formatting.shfmt,
+						none_ls.builtins.diagnostics.shellcheck,
+					}
+				}
+			);
+		end,
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+		}
 	}
 }, {})
