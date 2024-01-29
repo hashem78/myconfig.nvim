@@ -1,6 +1,9 @@
 vim.o.tabstop = 4
 vim.o.shiftwidth = 4
 
+vim.o.expandtab = true
+vim.o.autoindent = true
+vim.o.smartindent = true
 -- [[ Setting options ]]
 -- See `:help vim.o`
 -- NOTE: You can change these options as you wish!
