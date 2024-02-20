@@ -224,9 +224,6 @@ require('lazy').setup({
 		},
 		build = ':TSUpdate',
 	},
-	-- setup for inlay hints
-	{ 'lvimuser/lsp-inlayhints.nvim', config = true },
-
 	{
 		"iamcco/markdown-preview.nvim",
 		cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
@@ -335,5 +332,6 @@ require('lazy').setup({
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		}
-	}
+	},
+	"p00f/clangd_extensions.nvim"
 }, {})

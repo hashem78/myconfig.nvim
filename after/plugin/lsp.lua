@@ -41,8 +41,6 @@ local on_attach = function(client, bufnr)
   vim.api.nvim_buf_create_user_command(bufnr, 'Format', function(_)
     vim.lsp.buf.format()
   end, { desc = 'Format current buffer with LSP' })
-
-  require('lsp-inlayhints').on_attach(client, bufnr)
 end
 
 -- mason-lspconfig requires that these setup functions are called in this order
@@ -93,9 +91,25 @@ mason_lspconfig.setup {
 
 mason_lspconfig.setup_handlers {
   function(server_name)
+    local custom_on_attach = on_attach
+    if server_name == 'clangd' then
+     custom_on_attach = function (client, bufnr)
+        on_attach(client, bufnr)
+        local nmap = function(keys, func, desc)
+          if desc then
+            desc = 'LSP: ' .. desc
+          end
+
+          vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+        end
+        require("clangd_extensions.inlay_hints").setup_autocmd()
+        require("clangd_extensions.inlay_hints").set_inlay_hints()
+        nmap('<leader>gsh', ':ClangdSwitchSourceHeader<CCRR>', '[G]o to source/header')
+     end
+    end
     require('lspconfig')[server_name].setup {
       capabilities = capabilities,
-      on_attach = on_attach,
+      on_attach = custom_on_attach,
       settings = servers[server_name],
       filetypes = (servers[server_name] or {}).filetypes,
     }
@@ -110,6 +124,20 @@ require('luasnip.loaders.from_vscode').lazy_load()
 luasnip.config.setup {}
 
 cmp.setup {
+sorting = {
+    priority_weight = 2,
+    comparators = {
+      cmp.offset,
+      cmp.exact,
+      cmp.score,
+      cmp.recently_used,
+      require("clangd_extensions.cmp_scores"),
+      cmp.locality,
+      cmp.kind,
+      cmp.length,
+      cmp.order,
+    },
+  },
   snippet = {
     expand = function(args)
       luasnip.lsp_expand(args.body)
