@@ -51,6 +51,7 @@ return {
 			clangd = {},
 			pyright = {},
 			bashls = {},
+			yamlls = {},
 			lua_ls = {
 				Lua = {
 					workspace = { checkThirdParty = false },
@@ -61,6 +62,10 @@ return {
 
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
 		capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
+		capabilities.textDocument.foldingRange = {
+			dynamicRegistration = false,
+			lineFoldingOnly = true,
+		}
 
 		mason_lspconfig.setup {
 			ensure_installed = vim.tbl_keys(servers),

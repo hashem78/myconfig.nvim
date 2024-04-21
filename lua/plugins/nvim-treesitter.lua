@@ -6,7 +6,7 @@ return {
 	build = ':TSUpdate',
 	opts = {
 		sync_install = false,
-		ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'json' },
+		ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'json', 'yaml' },
 		auto_install = false,
 		highlight = { enable = true },
 		indent = { enable = true },
