@@ -64,3 +64,9 @@ vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open float
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
 vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = 'Move line up' })
 vim.keymap.set("n", "<A-k>", ":m .-2<CR>==", { desc = 'Move line down' })
+
+-- Format Json, whole buffer (needs jq)
+vim.keymap.set("n", "<Leader>fj", "<Cmd>%!jq<CR>",  { noremap = true, silent = true, desc = 'Format json with jq'})
+vim.keymap.set("n", "<Leader>fcj", "<Cmd>%!jq --compact-output<CR>",  { noremap = true, silent = true, desc = 'Compactly format json with jq'})
+vim.keymap.set("v", "<Leader>fj", ":'<,'>!jq<CR>", { noremap = true, silent = true, desc = 'Format json with jq'})
+vim.keymap.set("v", "<Leader>fcj", ":'<,'>!jq --compact-output<CR>", { noremap = true, silent = true, desc = 'Compactly format json with jq'})
