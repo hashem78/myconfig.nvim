@@ -9,7 +9,7 @@ return {
 		ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'json', 'yaml', 'dart' },
 		auto_install = false,
 		highlight = { enable = true },
-		indent = { enable = true },
+		indent = { enable = true, disable = { 'dart' }, },
 		incremental_selection = {
 			enable = true,
 			keymaps = {
