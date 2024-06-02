@@ -1,0 +1,12 @@
+{
+    "name": "hashem-snippets",
+    "contributes": {
+        "snippets": [
+            {
+                "language": "dart",
+                "path": "./snippets/flutter.json"
+            }
+        ]
+    }
+}
+
