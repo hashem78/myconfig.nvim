@@ -16,7 +16,7 @@ return {
 			mappings = {
 				i = {
 					['<C-u>'] = false,
-					['<C-d>'] = false,
+					['<C-d>'] = 'delete_buffer',
 				},
 			},
 		},
