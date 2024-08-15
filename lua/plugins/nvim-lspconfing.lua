@@ -60,10 +60,28 @@ return {
 		local mason_lspconfig = require('mason-lspconfig')
 		local servers = {
 			clangd = {},
-			pyright = {},
+			pyright = {
+				pyright = {
+					-- Using Ruff's import organizer
+					disableOrganizeImports = true,
+				},
+				python = {
+					analysis = {
+						-- Ignore all files for analysis to exclusively use Ruff for linting
+						ignore = { '*' },
+					},
+				},
+			},
 			bashls = {},
 			yamlls = {},
 			jdtls = {},
+			ruff = {
+				init_options = {
+					settings = {
+						path = { vim.fn.exepath('ruff') },
+					},
+				},
+			},
 			lua_ls = {
 				Lua = {
 					workspace = { checkThirdParty = false },
@@ -99,6 +117,12 @@ return {
 						require("clangd_extensions.inlay_hints").setup_autocmd()
 						require("clangd_extensions.inlay_hints").set_inlay_hints()
 						nmap('<leader>gsh', ':ClangdSwitchSourceHeader<CCRR>', '[G]o to source/header')
+					end
+				end
+				if server_name == 'ruff' then
+					custom_on_attach = function(client, bufnr)
+						on_attach(client, bufnr)
+						client.server_capabilities.hoverProvider = false
 					end
 				end
 				require('lspconfig')[server_name].setup {
