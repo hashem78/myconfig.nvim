@@ -10,4 +10,10 @@ return {
 	},
 	'p00f/clangd_extensions.nvim',
 	'vimpostor/vim-tpipeline',
+	{
+		'echasnovski/mini.move',
+		config = function()
+			require('mini.move').setup()
+		end
+	},
 }

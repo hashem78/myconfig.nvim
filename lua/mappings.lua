@@ -62,8 +62,6 @@ vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous dia
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next diagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Open floating diagnostic message' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostics list' })
-vim.keymap.set("n", "<A-j>", ":m .+1<CR>==", { desc = 'Move line up' })
-vim.keymap.set("n", "<A-k>", ":m .-2<CR>==", { desc = 'Move line down' })
 
 -- Format Json, whole buffer (needs jq)
 vim.keymap.set("n", "<Leader>fj", "<Cmd>%!jq<CR>", { noremap = true, silent = true, desc = 'Format json with jq' })
