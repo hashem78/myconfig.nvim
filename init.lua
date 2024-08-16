@@ -1,6 +1,8 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.opt.cmdheight = 0
+-- NOTE: You should make sure your terminal supports this
+vim.o.termguicolors = true
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -25,3 +27,10 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 })
 require('mappings')
 require("lazy").setup("plugins")
+
+
+require("catppuccin").setup({
+  compile_path = vim.fn.stdpath "cache" .. "/catppuccin",
+  flavour = "mocha",
+})
+vim.cmd.colorscheme("catppuccin")
