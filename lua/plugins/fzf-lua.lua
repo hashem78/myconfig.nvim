@@ -19,6 +19,7 @@ return {
 		vim.keymap.set('n', '<leader>sw', fzfLua.grep_cword, { desc = '[S]earch current [W]ord' })
 		vim.keymap.set('n', '<leader>sg', fzfLua.live_grep, { desc = '[S]earch by [G]rep' })
 		vim.keymap.set('n', '<leader>sr', fzfLua.resume, { desc = '[S]earch [R]esume' })
+		vim.keymap.set('n', '<leader>qf', fzfLua.quickfix, { desc = '[S]earch [R]esume' })
 
 		fzfLua.setup(opts)
 	end
