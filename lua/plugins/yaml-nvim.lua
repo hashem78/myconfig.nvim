@@ -3,6 +3,6 @@ return {
 	ft = { "yaml" }, -- optional
 	dependencies = {
 		"nvim-treesitter/nvim-treesitter",
-		"nvim-telescope/telescope.nvim", -- optional
+		-- "nvim-telescope/telescope.nvim", -- optional
 	},
 }

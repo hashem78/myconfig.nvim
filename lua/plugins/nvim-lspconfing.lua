@@ -7,15 +7,16 @@ local on_attach = function(client, bufnr)
 		vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
 	end
 
+	local fzfLua = require("fzf-lua")
 	nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
 	nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-	nmap('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-	nmap('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-	nmap('gI', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
-	nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-	nmap('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-	nmap('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+	nmap('gr', fzfLua.lsp_references, '[G]oto [R]eferences')
+	nmap('gd', fzfLua.lsp_definitions, '[G]oto [D]efinition')
+	nmap('gI', fzfLua.lsp_implementations, '[G]oto [I]mplementation')
+	nmap('<leader>sd', fzfLua.diagnostics_workspace, '[S]earch [D]iagnostics')
+	nmap('<leader>sD', fzfLua.diagnostics_document, '[S]earch [D]iagnostics Document')
+	nmap('<leader>D', fzfLua.lsp_definitions, 'Type [D]efinition')
 
 	nmap('K', vim.lsp.buf.hover, 'Hover Documentation')
 	nmap('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
