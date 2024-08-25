@@ -16,4 +16,11 @@ return {
 			require('mini.move').setup()
 		end
 	},
+	{
+		"mbbill/undotree",
+		lazy = false,
+		config = function()
+			vim.keymap.set('n', '<leader><F5>', vim.cmd.UndotreeToggle)
+		end
+	}
 }
