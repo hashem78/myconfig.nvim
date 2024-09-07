@@ -1,6 +1,8 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.opt.cmdheight = 0
+vim.opt.swapfile = false
+
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
 
