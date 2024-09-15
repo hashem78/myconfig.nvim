@@ -2,6 +2,9 @@ return {
 	'nvim-java/nvim-java',
 	config = function()
 		require('java').setup()
+		require('lspconfig').jdtls.setup {
+			on_attach = require('shared').on_lsp_attach,
+		}
 	end,
 	dependencies = {
 		'nvim-java/lua-async-await',
@@ -20,6 +23,6 @@ return {
 					'github:mason-org/mason-registry',
 				},
 			},
-		}
+		},
 	},
 }
