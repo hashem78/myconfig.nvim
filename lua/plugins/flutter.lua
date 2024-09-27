@@ -17,6 +17,9 @@ return {
 				lineLength = 120,
 			},
 		},
+		settings = {
+			renameFilesWithClasses = "always",
+		},
 		dev_log = {
 			filter = function(log_line)
 				local patterns_to_ignore = {
