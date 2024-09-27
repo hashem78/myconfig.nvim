@@ -17,6 +17,23 @@ return {
 				lineLength = 120,
 			},
 		},
+		dev_log = {
+			filter = function(log_line)
+				local patterns_to_ignore = {
+					"^D/EGL_emulation",
+					"^D/InsetsController",
+					"^D/InputMethodManager"
+				}
+
+				for _, pattern in ipairs(patterns_to_ignore) do
+					if log_line:match(pattern) then
+						return false
+					end
+				end
+
+				return true
+			end,
+		},
 	},
 	-- lazy = false,
 	dependencies = {
