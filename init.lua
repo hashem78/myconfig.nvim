@@ -2,6 +2,8 @@ vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.opt.cmdheight = 0
 vim.opt.swapfile = false
+vim.opt.grepprg = "rg --vimgrep"
+vim.opt.grepformat = "%f:%l:%c:%m"
 
 -- NOTE: You should make sure your terminal supports this
 vim.o.termguicolors = true
