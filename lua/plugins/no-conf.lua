@@ -9,7 +9,7 @@ return {
 		end
 	},
 	'p00f/clangd_extensions.nvim',
-	'vimpostor/vim-tpipeline',
+	-- 'vimpostor/vim-tpipeline',
 	{
 		'echasnovski/mini.move',
 		config = function()
