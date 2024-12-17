@@ -41,6 +41,7 @@ return {
 					telemetry = { enable = false },
 				},
 			},
+			csharp_ls = { },
 		}
 
 		local shared = require('shared')
