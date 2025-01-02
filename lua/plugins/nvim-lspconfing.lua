@@ -57,6 +57,13 @@ return {
 			ensure_installed = vim.tbl_keys(servers),
 		}
 
+		require('lspconfig').beancount.setup({
+			capabilities = capabilities,
+			on_attach = shared.on_lsp_attach,
+			cmd = { vim.fn.expand('$HOME/.cargo/bin/beancount-language-server') }
+		})
+
+
 		mason_lspconfig.setup_handlers {
 			function(server_name)
 				local custom_on_attach = shared.on_lsp_attach
