@@ -1,3 +1,4 @@
+vim.o.laststatus = 3
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.opt.cmdheight = 0
