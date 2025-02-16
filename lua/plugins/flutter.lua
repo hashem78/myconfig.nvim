@@ -20,6 +20,7 @@ return {
 		settings = {
 			renameFilesWithClasses = "always",
 		},
+		fvm = true, -- takes priority over path, uses <workspace>/.fvm/flutter_sdk if enabled
 		dev_log = {
 			filter = function(log_line)
 				local patterns_to_ignore = {

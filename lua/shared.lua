@@ -10,7 +10,7 @@ function M.on_lsp_attach(_, bufnr)
 
 	local fzfLua = require("fzf-lua")
 	nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
-	nmap('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+	nmap('<leader>ca', fzfLua.lsp_code_actions, '[C]ode [A]ction')
 
 	nmap('gr', fzfLua.lsp_references, '[G]oto [R]eferences')
 	nmap('gd', fzfLua.lsp_definitions, '[G]oto [D]efinition')

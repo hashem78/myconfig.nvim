@@ -21,6 +21,8 @@ return {
 		vim.keymap.set('n', '<leader>sr', fzfLua.resume, { desc = '[S]earch [R]esume' })
 		vim.keymap.set('n', '<leader>qf', fzfLua.quickfix, { desc = '[S]earch [R]esume' })
 
+		vim.keymap.set('n', '<leader>tb', fzfLua.tmux_buffers, { desc = 'List [T]mux [B]uffers' })
+
 		fzfLua.setup(opts)
 	end
 }
