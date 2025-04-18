@@ -26,7 +26,9 @@ return {
 				local patterns_to_ignore = {
 					"^D/EGL_emulation",
 					"^D/InsetsController",
-					"^D/InputMethodManager"
+					"^D/InputMethodManager",
+					"^E/libEGL",
+					"^W/StorageUtil",
 				}
 
 				for _, pattern in ipairs(patterns_to_ignore) do
