@@ -4,12 +4,10 @@ return {
 		{ 'williamboman/mason.nvim', config = true },
 		'williamboman/mason-lspconfig.nvim',
 		{ 'j-hui/fidget.nvim',       opts = {} },
-		'folke/neodev.nvim',
 	},
 	config = function()
 		require('mason').setup()
 		require('mason-lspconfig').setup()
-		require('neodev').setup()
 
 		local mason_lspconfig = require('mason-lspconfig')
 		local servers = {
@@ -62,38 +60,43 @@ return {
 			cmd = { vim.fn.expand('$HOME/.cargo/bin/beancount-language-server') }
 		})
 
+		require('mason-lspconfig').setup {
+			ensure_installed = {},
+			automatic_installation = false,
+			handlers = {
+				function(server_name)
+					local custom_on_attach = shared.on_lsp_attach
+					if server_name == 'clangd' then
+						custom_on_attach = function(client, bufnr)
+							shared.on_lsp_attach(client, bufnr)
+							local nmap = function(keys, func, desc)
+								if desc then
+									desc = 'LSP: ' .. desc
+								end
 
-		mason_lspconfig.setup_handlers {
-			function(server_name)
-				local custom_on_attach = shared.on_lsp_attach
-				if server_name == 'clangd' then
-					custom_on_attach = function(client, bufnr)
-						shared.on_lsp_attach(client, bufnr)
-						local nmap = function(keys, func, desc)
-							if desc then
-								desc = 'LSP: ' .. desc
+								vim.keymap.set('n', keys, func,
+									{ buffer = bufnr, desc = desc })
 							end
-
-							vim.keymap.set('n', keys, func, { buffer = bufnr, desc = desc })
+							require("clangd_extensions.inlay_hints").setup_autocmd()
+							require("clangd_extensions.inlay_hints").set_inlay_hints()
+							nmap('<leader>gsh', ':ClangdSwitchSourceHeader<CCRR>',
+								'[G]o to source/header')
 						end
-						require("clangd_extensions.inlay_hints").setup_autocmd()
-						require("clangd_extensions.inlay_hints").set_inlay_hints()
-						nmap('<leader>gsh', ':ClangdSwitchSourceHeader<CCRR>', '[G]o to source/header')
 					end
-				end
-				if server_name == 'ruff' then
-					custom_on_attach = function(client, bufnr)
-						shared.on_lsp_attach(client, bufnr)
-						client.server_capabilities.hoverProvider = false
+					if server_name == 'ruff' then
+						custom_on_attach = function(client, bufnr)
+							shared.on_lsp_attach(client, bufnr)
+							client.server_capabilities.hoverProvider = false
+						end
 					end
+					require('lspconfig')[server_name].setup {
+						capabilities = capabilities,
+						on_attach = custom_on_attach,
+						settings = servers[server_name],
+						filetypes = (servers[server_name] or {}).filetypes,
+					}
 				end
-				require('lspconfig')[server_name].setup {
-					capabilities = capabilities,
-					on_attach = custom_on_attach,
-					settings = servers[server_name],
-					filetypes = (servers[server_name] or {}).filetypes,
-				}
-			end,
+			},
 		}
 	end
 }
