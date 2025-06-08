@@ -1,102 +1,97 @@
 return {
-	'neovim/nvim-lspconfig',
+	"neovim/nvim-lspconfig",
 	dependencies = {
-		{ 'williamboman/mason.nvim', config = true },
-		'williamboman/mason-lspconfig.nvim',
-		{ 'j-hui/fidget.nvim',       opts = {} },
+		{ "williamboman/mason.nvim", config = true },
+		"williamboman/mason-lspconfig.nvim",
+		{ "j-hui/fidget.nvim", opts = {} },
+		"WhoIsSethDaniel/mason-tool-installer.nvim",
+		"saghen/blink.cmp",
 	},
 	config = function()
-		require('mason').setup()
-		require('mason-lspconfig').setup()
+		vim.api.nvim_create_autocmd("LspAttach", {
+			group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
+			callback = function(event)
+				local shared = require("shared")
+				shared.on_lsp_attach(nil, event.buf)
+			end,
+		})
 
-		local mason_lspconfig = require('mason-lspconfig')
-		local servers = {
-			clangd = {},
-			pyright = {
-				pyright = {
-					-- Using Ruff's import organizer
-					disableOrganizeImports = true,
+		vim.diagnostic.config({
+			severity_sort = true,
+			float = { border = "rounded", source = "if_many" },
+			underline = { severity = vim.diagnostic.severity.ERROR },
+			signs = vim.g.have_nerd_font and {
+				text = {
+					[vim.diagnostic.severity.ERROR] = "󰅚 ",
+					[vim.diagnostic.severity.WARN] = "󰀪 ",
+					[vim.diagnostic.severity.INFO] = "󰋽 ",
+					[vim.diagnostic.severity.HINT] = "󰌶 ",
 				},
-				python = {
-					analysis = {
-						-- Ignore all files for analysis to exclusively use Ruff for linting
-						ignore = { '*' },
-					},
-				},
+			} or {},
+			virtual_text = {
+				source = "if_many",
+				spacing = 2,
+				format = function(diagnostic)
+					local diagnostic_message = {
+						[vim.diagnostic.severity.ERROR] = diagnostic.message,
+						[vim.diagnostic.severity.WARN] = diagnostic.message,
+						[vim.diagnostic.severity.INFO] = diagnostic.message,
+						[vim.diagnostic.severity.HINT] = diagnostic.message,
+					}
+					return diagnostic_message[diagnostic.severity]
+				end,
 			},
-			bashls = {},
-			yamlls = {},
-			ruff = {
-				init_options = {
-					settings = {
-						path = { vim.fn.exepath('ruff') },
-					},
-				},
-			},
-			lua_ls = {
-				Lua = {
-					workspace = { checkThirdParty = false },
-					telemetry = { enable = false },
-				},
-			},
-		}
-
-		local shared = require('shared')
+		})
 
 		local capabilities = vim.lsp.protocol.make_client_capabilities()
-		capabilities = require('cmp_nvim_lsp').default_capabilities(capabilities)
 		capabilities.textDocument.foldingRange = {
 			dynamicRegistration = false,
 			lineFoldingOnly = true,
 		}
 
-		mason_lspconfig.setup {
-			ensure_installed = vim.tbl_keys(servers),
+		local servers = {
+			clangd = {},
+			gopls = {},
+			pyright = {
+				-- Using Ruff's import organizer
+				disableOrganizeImports = true,
+			},
+			ruff = {
+				init_options = {
+					settings = {
+						path = { vim.fn.exepath("ruff") },
+					},
+				},
+			},
+
+			lua_ls = {
+				settings = {
+					Lua = {
+						completion = {
+							callSnippet = "Replace",
+						},
+					},
+				},
+			},
 		}
 
-		require('lspconfig').beancount.setup({
-			capabilities = capabilities,
-			on_attach = shared.on_lsp_attach,
-			cmd = { vim.fn.expand('$HOME/.cargo/bin/beancount-language-server') }
+		local ensure_installed = vim.tbl_keys(servers or {})
+		vim.list_extend(ensure_installed, {
+			"stylua", -- Used to format Lua code
 		})
+		require("mason-tool-installer").setup({ ensure_installed = ensure_installed })
 
-		require('mason-lspconfig').setup {
+		require("mason-lspconfig").setup({
+			automatic_enable = true,
 			ensure_installed = {},
 			automatic_installation = false,
 			handlers = {
 				function(server_name)
-					local custom_on_attach = shared.on_lsp_attach
-					if server_name == 'clangd' then
-						custom_on_attach = function(client, bufnr)
-							shared.on_lsp_attach(client, bufnr)
-							local nmap = function(keys, func, desc)
-								if desc then
-									desc = 'LSP: ' .. desc
-								end
-
-								vim.keymap.set('n', keys, func,
-									{ buffer = bufnr, desc = desc })
-							end
-							require("clangd_extensions.inlay_hints").setup_autocmd()
-							require("clangd_extensions.inlay_hints").set_inlay_hints()
-							nmap('<leader>gsh', ':ClangdSwitchSourceHeader<CCRR>',
-								'[G]o to source/header')
-						end
-					end
-					if server_name == 'ruff' then
-						custom_on_attach = function(client, bufnr)
-							shared.on_lsp_attach(client, bufnr)
-							client.server_capabilities.hoverProvider = false
-						end
-					end
-					require('lspconfig')[server_name].setup {
-						capabilities = capabilities,
-						on_attach = custom_on_attach,
-						settings = servers[server_name],
-						filetypes = (servers[server_name] or {}).filetypes,
-					}
-				end
+					local server = servers[server_name] or {}
+					server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
+					require("lspconfig")[server_name].setup(server)
+				end,
 			},
-		}
-	end
+		})
+	end,
 }

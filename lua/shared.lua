@@ -28,6 +28,10 @@ function M.on_lsp_attach(_, bufnr)
 	nmap('<leader>wl', function()
 		print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 	end, '[W]orkspace [L]ist Folders')
+
+	nmap('<leader>th', function()
+		vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = bufnr })
+	end, '[T]oggle Inlay [H]ints')
 end
 
 return M

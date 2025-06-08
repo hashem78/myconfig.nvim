@@ -1,5 +1,5 @@
 return {
-	'akinsho/flutter-tools.nvim',
+	"akinsho/flutter-tools.nvim",
 	config = function(_, opts)
 		require("flutter-tools").setup(opts)
 		-- require("telescope").load_extension("flutter")
@@ -9,10 +9,10 @@ return {
 			color = {
 				enabled = true,
 			},
-			on_attach = require('shared').on_lsp_attach,
+			on_attach = require("shared").on_lsp_attach,
 			settings = {
 				analysisExcludedFolders = {
-					vim.fn.expand('$HOME/.pub-cache'),
+					vim.fn.expand("$HOME/.pub-cache"),
 				},
 				lineLength = 120,
 			},
@@ -44,9 +44,8 @@ return {
 	-- lazy = false,
 	dependencies = {
 		-- 'nvim-telescope/telescope.nvim',
-		'nvim-lua/plenary.nvim',
-		'stevearc/dressing.nvim', -- optional for vim.ui.select
-		'RobertBrunhage/flutter-riverpod-snippets',
+		"nvim-lua/plenary.nvim",
+		"stevearc/dressing.nvim", -- optional for vim.ui.select
+		"RobertBrunhage/flutter-riverpod-snippets",
 	},
-
 }
