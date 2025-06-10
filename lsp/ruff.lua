@@ -1,7 +1,9 @@
 return {
-	init_options = {
-		settings = {
-			path = { vim.fn.exepath("ruff") },
+	settings = {
+		init_options = {
+			settings = {
+				path = { vim.fn.exepath("ruff") },
+			},
 		},
 	},
 }

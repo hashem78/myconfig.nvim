@@ -17,8 +17,8 @@ return {
 					return
 				end
 				if client.name == "ruff" then
-					-- Disable hover in favor of Pyright
-					client.server_capabilities.hoverProvider = false
+					---@diagnostic disable-next-line: inject-field
+					client.server_capabilities.hoverrovider = false
 				end
 				shared.on_lsp_attach(client, event.buf)
 			end,
@@ -37,13 +37,22 @@ return {
 			"clangd",
 			"pyright",
 			"ruff",
+			"jdtls",
 		}
 		local to_be_installed = vim.list_extend(servers, { "stylua" })
+
+		for _, server_name in ipairs(servers) do
+			if server_name == "jdtls" then
+				goto continue
+			end
+			vim.lsp.enable(server_name)
+			::continue::
+		end
 
 		require("mason-tool-installer").setup({ ensure_installed = to_be_installed })
 
 		require("mason-lspconfig").setup({
-			automatic_enable = true,
+			automatic_enable = false,
 			ensure_installed = {},
 			automatic_installation = true,
 		})

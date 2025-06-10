@@ -1,22 +1,40 @@
 return {
-	'nvim-treesitter/nvim-treesitter',
+	"nvim-treesitter/nvim-treesitter",
 	dependencies = {
-		'nvim-treesitter/nvim-treesitter-textobjects',
+		"nvim-treesitter/nvim-treesitter-textobjects",
 	},
-	build = ':TSUpdate',
+	build = ":TSUpdate",
 	opts = {
 		sync_install = false,
-		ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'javascript', 'typescript', 'vimdoc', 'vim', 'bash', 'json', 'yaml', 'dart', 'c_sharp' },
+		ensure_installed = {
+			"c",
+			"cpp",
+			"go",
+			"lua",
+			"python",
+			"rust",
+			"tsx",
+			"javascript",
+			"typescript",
+			"vimdoc",
+			"vim",
+			"bash",
+			"json",
+			"yaml",
+			"dart",
+			"c_sharp",
+			"java",
+		},
 		auto_install = false,
 		highlight = { enable = true },
-		indent = { enable = true, disable = { 'dart' }, },
+		indent = { enable = true, disable = { "dart" } },
 		incremental_selection = {
 			enable = true,
 			keymaps = {
-				init_selection = '<c-space>',
-				node_incremental = '<c-space>',
-				scope_incremental = '<c-s>',
-				node_decremental = '<M-space>',
+				init_selection = "<c-space>",
+				node_incremental = "<c-space>",
+				scope_incremental = "<c-s>",
+				node_decremental = "<M-space>",
 			},
 		},
 		textobjects = {
@@ -25,46 +43,46 @@ return {
 				lookahead = true,
 				keymaps = {
 
-					['aa'] = '@parameter.outer',
-					['ia'] = '@parameter.inner',
-					['af'] = '@function.outer',
-					['if'] = '@function.inner',
-					['ac'] = '@class.outer',
-					['ic'] = '@class.inner',
+					["aa"] = "@parameter.outer",
+					["ia"] = "@parameter.inner",
+					["af"] = "@function.outer",
+					["if"] = "@function.inner",
+					["ac"] = "@class.outer",
+					["ic"] = "@class.inner",
 				},
 			},
 			move = {
 				enable = true,
 				set_jumps = true,
 				goto_next_start = {
-					[']m'] = '@function.outer',
-					[']]'] = '@class.outer',
+					["]m"] = "@function.outer",
+					["]]"] = "@class.outer",
 				},
 				goto_next_end = {
-					[']M'] = '@function.outer',
-					[']['] = '@class.outer',
+					["]M"] = "@function.outer",
+					["]["] = "@class.outer",
 				},
 				goto_previous_start = {
-					['[m'] = '@function.outer',
-					['[['] = '@class.outer',
+					["[m"] = "@function.outer",
+					["[["] = "@class.outer",
 				},
 				goto_previous_end = {
-					['[M'] = '@function.outer',
-					['[]'] = '@class.outer',
+					["[M"] = "@function.outer",
+					["[]"] = "@class.outer",
 				},
 			},
 			swap = {
 				enable = true,
 				swap_next = {
-					['<leader>a'] = '@parameter.inner',
+					["<leader>a"] = "@parameter.inner",
 				},
 				swap_previous = {
-					['<leader>A'] = '@parameter.inner',
+					["<leader>A"] = "@parameter.inner",
 				},
 			},
 		},
 	},
 	config = function(spec, opts)
-		require('nvim-treesitter.configs').setup(opts)
-	end
+		require("nvim-treesitter.configs").setup(opts)
+	end,
 }

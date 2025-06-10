@@ -1,4 +1,13 @@
 return {
+	capabilities = {
+		textDocument = {
+			publishDiagnostics = {
+				tagSupport = {
+					valueSet = { 2 },
+				},
+			},
+		},
+	},
 	settings = {
 		pyright = {
 			-- Using Ruff's import organizer
