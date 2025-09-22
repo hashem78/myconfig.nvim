@@ -1,5 +1,5 @@
 return {
-	'stevearc/oil.nvim',
+	"stevearc/oil.nvim",
 	-- Optional dependencies
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	opts = {
@@ -63,7 +63,11 @@ return {
 			["g?"] = "actions.show_help",
 			["<CR>"] = "actions.select",
 			["<C-s>"] = { "actions.select", opts = { vertical = true }, desc = "Open the entry in a vertical split" },
-			["<C-h>"] = { "actions.select", opts = { horizontal = true }, desc = "Open the entry in a horizontal split" },
+			["<C-h>"] = {
+				"actions.select",
+				opts = { horizontal = true },
+				desc = "Open the entry in a horizontal split",
+			},
 			["<C-t>"] = { "actions.select", opts = { tab = true }, desc = "Open the entry in new tab" },
 			["<C-p>"] = "actions.preview",
 			["<C-c>"] = "actions.close",
@@ -76,6 +80,13 @@ return {
 			["gx"] = "actions.open_external",
 			["g."] = "actions.toggle_hidden",
 			["g\\"] = "actions.toggle_trash",
+			["yp"] = {
+				desc = "Copy filepath to system clipboard",
+				callback = function()
+					require("oil.actions").copy_entry_path.callback()
+					vim.fn.setreg("+", vim.fn.getreg(vim.v.register))
+				end,
+			},
 		},
 		-- Set to false to disable all of the above keymaps
 		use_default_keymaps = true,
@@ -249,5 +260,5 @@ return {
 			end,
 		}
 		require("oil").setup(opts)
-	end
+	end,
 }

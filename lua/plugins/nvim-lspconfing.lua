@@ -40,7 +40,7 @@ return {
 			"jdtls",
 			"ts_ls",
 		}
-		local to_be_installed = vim.list_extend(servers, { "stylua", "prettier" })
+		local to_be_installed = vim.list_extend(servers, { "stylua", "prettier", "black", "isort" })
 
 		for _, server_name in ipairs(servers) do
 			if server_name == "jdtls" then
