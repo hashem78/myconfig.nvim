@@ -9,7 +9,6 @@ return {
 		ensure_installed = {
 			"c",
 			"cpp",
-			"go",
 			"lua",
 			"python",
 			"rust",

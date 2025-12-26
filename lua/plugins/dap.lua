@@ -2,7 +2,6 @@ return {
 	{
 		"mfussenegger/nvim-dap",
 		dependencies = {
-			"leoluz/nvim-dap-go",
 			"mfussenegger/nvim-dap-python",
 			"rcarriga/nvim-dap-ui",
 			"theHamsta/nvim-dap-virtual-text",
@@ -14,7 +13,6 @@ return {
 			local ui = require "dapui"
 
 			require("dapui").setup()
-			require("dap-go").setup()
 			require("dap-python").setup()
 
 			require("nvim-dap-virtual-text").setup {}
