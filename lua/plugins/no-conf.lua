@@ -12,7 +12,9 @@ return {
 	{
 		'echasnovski/mini.move',
 		config = function()
-			require('mini.move').setup()
+			require('mini.move').setup({
+				mappings = { down = 'J', up = 'K' },
+			})
 		end
 	},
 	{
