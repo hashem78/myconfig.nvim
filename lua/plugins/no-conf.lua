@@ -8,7 +8,6 @@ return {
 			require('Comment').setup()
 		end
 	},
-	'p00f/clangd_extensions.nvim',
 	-- 'vimpostor/vim-tpipeline',
 	{
 		'echasnovski/mini.move',

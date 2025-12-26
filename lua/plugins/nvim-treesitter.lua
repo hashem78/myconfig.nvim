@@ -8,7 +8,6 @@ return {
 		sync_install = false,
 		ensure_installed = {
 			"c",
-			"cpp",
 			"lua",
 			"python",
 			"rust",
@@ -20,13 +19,12 @@ return {
 			"bash",
 			"json",
 			"yaml",
-			"dart",
 			"c_sharp",
 			"java",
 		},
 		auto_install = false,
 		highlight = { enable = true },
-		indent = { enable = true, disable = { "dart" } },
+		indent = { enable = true },
 		incremental_selection = {
 			enable = true,
 			keymaps = {

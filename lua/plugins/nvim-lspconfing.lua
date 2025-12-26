@@ -33,7 +33,6 @@ return {
 		vim.lsp.config("*", { capabilities = capabilities })
 		local servers = {
 			"lua_ls",
-			"clangd",
 			"pyright",
 			"ruff",
 			"jdtls",
