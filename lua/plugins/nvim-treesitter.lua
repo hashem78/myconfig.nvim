@@ -79,7 +79,4 @@ return {
 			},
 		},
 	},
-	config = function(spec, opts)
-		require("nvim-treesitter.configs").setup(opts)
-	end,
 }
