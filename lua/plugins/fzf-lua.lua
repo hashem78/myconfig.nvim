@@ -103,6 +103,9 @@ return {
 	dependencies = { "nvim-tree/nvim-web-devicons" },
 	opts = {
 		-- "telescope",
+		files = {
+			path_shorten = true,
+		},
 	},
 	config = function(_, opts)
 		-- calling `setup` is optional for customization

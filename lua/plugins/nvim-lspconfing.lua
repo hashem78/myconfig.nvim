@@ -9,6 +9,16 @@ return {
 	},
 	config = function()
 		local shared = require("shared")
+
+		local orig_handler = vim.lsp.handlers["textDocument/publishDiagnostics"]
+		vim.lsp.handlers["textDocument/publishDiagnostics"] = function(err, result, ctx, config)
+			local uri = result.uri or ""
+			if uri:find("%.bemol/") or uri:find("/generated%-sources/") then
+				return
+			end
+			return orig_handler(err, result, ctx, config)
+		end
+
 		vim.api.nvim_create_autocmd("LspAttach", {
 			group = vim.api.nvim_create_augroup("kickstart-lsp-attach", { clear = true }),
 			callback = function(event)
@@ -21,6 +31,22 @@ return {
 					client.server_capabilities.hoverrovider = false
 				end
 				shared.on_lsp_attach(client, event.buf)
+
+				if client.name == "jdtls" then
+					local bemol_dir = vim.fs.find({ ".bemol" }, { upward = true, type = "directory" })[1]
+					if bemol_dir then
+						local file = io.open(bemol_dir .. "/ws_root_folders", "r")
+						if file then
+							local existing = vim.lsp.buf.list_workspace_folders()
+							for line in file:lines() do
+								if not vim.tbl_contains(existing, line) then
+									vim.lsp.buf.add_workspace_folder(line)
+								end
+							end
+							file:close()
+						end
+					end
+				end
 			end,
 		})
 

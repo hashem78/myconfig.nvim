@@ -28,9 +28,7 @@ return {
 	config = function()
 		local function attach_jdtls()
 			local lombok_jar = vim.fn.expand("$MASON/packages/jdtls/lombok.jar")
-			local cmd = vim.lsp.config.jdtls.cmd
-			--- @cast cmd string[]
-			vim.list_extend(cmd, { string.format("--jvm-arg=-javaagent:%s", lombok_jar) })
+			local cmd = { "jdtls", string.format("--jvm-arg=-javaagent:%s", lombok_jar) }
 
 			local config = vim.tbl_extend("force", vim.lsp.config.jdtls, {
 				cmd = cmd,
