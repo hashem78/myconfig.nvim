@@ -57,11 +57,31 @@ local function discover_brazil_jdk()
 	return jdk_home, jdk_version
 end
 
--- macOS JDK fallback: resolve via java_home so we don't hardcode a path.
-local function macos_java_home(version)
-	local out = vim.fn.system({ "/usr/libexec/java_home", "-v", tostring(version) })
-	if vim.v.shell_error == 0 then
-		return vim.trim(out)
+-- OS-aware JDK fallback (when Brazil discovery finds nothing).
+-- macOS: resolve via java_home. Linux: probe common corretto install roots.
+local function jdk_fallback_home(version)
+	if vim.fn.has("mac") == 1 then
+		-- /usr/libexec/java_home may be absent; guard so we never throw.
+		if vim.fn.executable("/usr/libexec/java_home") == 1 then
+			local out = vim.fn.system({ "/usr/libexec/java_home", "-v", tostring(version) })
+			if vim.v.shell_error == 0 then
+				return vim.trim(out)
+			end
+		end
+		return nil
+	end
+
+	-- Linux (CDM): check JAVA_HOME, then well-known corretto locations.
+	local candidates = {
+		os.getenv("JAVA_HOME"),
+		string.format("/usr/lib/jvm/java-%s-amazon-corretto", version),
+		string.format("/usr/lib/jvm/java-%s-amazon-corretto.aarch64", version),
+		string.format("/usr/lib/jvm/java-%s-amazon-corretto.x86_64", version),
+	}
+	for _, path in ipairs(candidates) do
+		if path and vim.uv.fs_stat(path .. "/bin/java") then
+			return path
+		end
 	end
 	return nil
 end
@@ -74,7 +94,7 @@ local function attach_jdtls()
 
 	local lombok_jar = vim.fn.expand("$MASON/packages/jdtls/lombok.jar")
 	local brazil_jdk_home, brazil_jdk_version = discover_brazil_jdk()
-	local fallback_home = macos_java_home(21)
+	local fallback_home = jdk_fallback_home(21)
 
 	local runtimes = {}
 	if brazil_jdk_home and brazil_jdk_version then
