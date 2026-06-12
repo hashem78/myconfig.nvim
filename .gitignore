@@ -1,1 +1,3 @@
-lazy-lock.json
+# vim.pack lockfile (nvim-pack-lock.json) is intentionally tracked.
+*.swp
+*.swo
