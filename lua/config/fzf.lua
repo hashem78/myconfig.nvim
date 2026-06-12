@@ -106,6 +106,6 @@ vim.keymap.set("n", "<leader>sg", fzfLua.live_grep, { desc = "[S]earch by [G]rep
 vim.keymap.set("n", "<leader>sr", fzfLua.resume, { desc = "[S]earch [R]esume" })
 vim.keymap.set("n", "<leader>qf", fzfLua.quickfix, { desc = "[S]earch [R]esume" })
 
-vim.keymap.set("n", "<leader>tb", fzfLua.tmux_buffers, { desc = "List [T]mux [B]uffers" })
+vim.keymap.set("n", "<leader>st", fzfLua.tmux_buffers, { desc = "[S]earch [T]mux buffers" })
 
 vim.keymap.set("n", "<leader>pp", open_package_picker, { desc = "Pick Package" })

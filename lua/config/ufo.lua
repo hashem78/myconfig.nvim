@@ -22,10 +22,10 @@ vim.o.foldenable = true
 vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 
 local ufo = require("ufo")
-vim.keymap.set("n", "zR", ufo.openAllFolds)
-vim.keymap.set("n", "zM", ufo.closeAllFolds)
-vim.keymap.set("n", "zr", ufo.openFoldsExceptKinds)
-vim.keymap.set("n", "zm", ufo.closeFoldsWith)
+vim.keymap.set("n", "zR", ufo.openAllFolds, { desc = "Open all folds" })
+vim.keymap.set("n", "zM", ufo.closeAllFolds, { desc = "Close all folds" })
+vim.keymap.set("n", "zr", ufo.openFoldsExceptKinds, { desc = "Open folds except kinds" })
+vim.keymap.set("n", "zm", ufo.closeFoldsWith, { desc = "Close folds with" })
 vim.keymap.set("n", "zK", function()
 	local winid = ufo.peekFoldedLinesUnderCursor()
 	if not winid then

@@ -1,23 +1,22 @@
 local wk = require("which-key")
+
+-- Group labels for leader prefixes. Individual mappings document themselves via
+-- their `desc` at the vim.keymap.set call site; these just name the groups.
 wk.add({
-	{ "<leader>c", group = "[C]ode" },
-	{ "<leader>c_", hidden = true },
-	{ "<leader>d", group = "[D]ocument" },
-	{ "<leader>d_", hidden = true },
-	{ "<leader>g", group = "[G]it" },
-	{ "<leader>g_", hidden = true },
-	{ "<leader>h", group = "Git [H]unk" },
-	{ "<leader>h_", hidden = true },
-	{ "<leader>r", group = "[R]ename" },
-	{ "<leader>r_", hidden = true },
-	{ "<leader>s", group = "[S]earch" },
-	{ "<leader>s_", hidden = true },
-	{ "<leader>t", group = "[T]oggle" },
-	{ "<leader>t_", hidden = true },
-	{ "<leader>w", group = "[W]orkspace" },
-	{ "<leader>w_", hidden = true },
-}, {
-	mode = { "v" },
-	{ "<leader>", group = "VISUAL <leader>" },
-	{ "<leader>h", desc = "Git [H]unk" },
+	{ "<leader>c", group = "[C]ode" }, -- ca: code action
+	{ "<leader>f", group = "[F]ormat" }, -- f: buffer, fj/fcj: jq json
+	{ "<leader>g", group = "[G]it" }, -- gf: git files
+	{ "<leader>h", group = "Git [H]unk" }, -- stage/reset/preview/blame/diff
+	{ "<leader>r", group = "[R]ename" }, -- rn: lsp rename
+	{ "<leader>s", group = "[S]earch" }, -- fzf-lua pickers + diagnostics
+	{ "<leader>t", group = "[T]oggle" }, -- th: inlay hints, tb: tmux bufs, td: deleted hunk
+	{ "<leader>w", group = "[W]orkspace" }, -- lsp workspace folders
+	{ "<leader>x", group = "Trouble / Diagnostics" }, -- xx/xw/xd/xq/xl
+	{ "<leader>p", group = "[P]ackage" }, -- pp: brazil package picker
+})
+
+-- Visual-mode groups.
+wk.add({
+	{ "<leader>h", group = "Git [H]unk", mode = "v" }, -- stage/reset hunk on selection
+	{ "<leader>f", group = "[F]ormat", mode = "v" }, -- fj/fcj: jq on selection
 })
