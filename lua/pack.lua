@@ -21,6 +21,9 @@ vim.pack.add({
 	{ src = gh("rafamadriz/friendly-snippets") },
 	{ src = gh("folke/lazydev.nvim") },
 
+	-- Repositions the ui2 cmdline window (requires ui2 enabled).
+	{ src = gh("rachartier/tiny-cmdline.nvim") },
+
 	-- LSP + tooling
 	{ src = gh("neovim/nvim-lspconfig") },
 	{ src = gh("mason-org/mason.nvim") },

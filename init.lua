@@ -53,6 +53,9 @@ require("catppuccin").setup({
 })
 vim.cmd.colorscheme("catppuccin")
 
+-- Experimental core UI (ui2): redesigned messages/cmdline.
+require("config.ui2")
+
 -- Plugin configuration modules.
 require("config.lsp")
 require("config.blink")
